@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Gestion de Personas</title>
+    </h:head>
+    <h:body>
+        
+        <h:form id="formInsertar">
+            <p:panelGrid columns="2">
+                
+                <p:outputLabel value="Rut del Usuario"/>
+                <p:inputText value="#{usuarioBean.usuario.rut}" />
+                
+                <p:outputLabel value="Nombre de la Persona"/>
+                <p:inputText value="#{usuarioBean.usuario.nombre}" />
+                
+                <p:outputLabel value="Contraseña de la Persona"/>
+                <p:inputText value="#{usuarioBean.usuario.password}" />
+                
+                <p:outputLabel value="Correo de la Persona"/>
+                <p:inputText value="#{usuarioBean.usuario.correo}" />
+                
+            </p:panelGrid>
+            <p:commandButton actionListener="#{usuarioBean.insertar()}" value="Ingresar Persona" update=":formMostrar"/>
+        </h:form>
+        
+        
+         
+            
+            <!-- DATATABLE-->
+        <h:form id="formMostrar">
+            <p:dataTable var="usr" value="#{usuarioBean.usuarios}"
+                         emptyMessage="No hay personas disponibless"
+paginator="true" rows="10" paginatorPosition="top"
+paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}
+{PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+rowsPerPageTemplate="10"
+                         >
+                
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{usr.rut}"/>
+                </p:column>
+                <p:column headerText="Apellido">
+                    <h:outputText value="#{usr.nombre}"/>
+                </p:column>
+                 <p:column headerText="Apellido">
+                     <h:outputText value="#{usr.correo}"/>
+                </p:column>
+                 <p:column headerText="Apellido">
+                     <h:outputText value="#{usr.password}"/>
+                </p:column>
+            
+                
+                
+                <p:column headerText="Accion">
+                    <p:commandButton value="Editar" onclick="PF('dlgmodificar').show();" update=":formModificar">
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usr}"/>
+                    </p:commandButton>
+                   
+                </p:column>
+             
+             <p:column headerText="Accion">
+                    <p:commandButton value="Eliminar" onclick="PF('dlgeliminar').show();" >
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usr}"/>
+                    </p:commandButton>
+                   
+                </p:column>
+                
+                
+                </p:dataTable>
+            
+        </h:form>
+            
+            
+            <p:dialog id="dlg" header="Modificar Persona" showEffect="explode" hideEffect="bounce"
+                    widgetVar="dlgmodificar" modal="true" resizable="false" minWidth="200">
+            <h:form id="formModificar">
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Rut del Usuario"/>
+                    <p:inputText value="#{usuarioBean.usuario.rut}" disabled="true" />
+                    
+                    <p:outputLabel value="Nombre del Usuario"/>
+                    <p:inputText value="#{usuarioBean.usuario.nombre}" />
+                
+ 
+                <p:outputLabel value="Correo del Usuario"/>
+                <p:inputText value="#{usuarioBean.usuario.correo}" />
+                
+                <p:outputLabel value="Correo del Usuario"/>
+                <p:inputText value="#{usuarioBean.usuario.password}" />
+                
+                </p:panelGrid>
+                <p:commandButton actionListener="#{usuarioBean.modificar()}" value="Modificar Persona" update=":formMostrar"
+                                 onclick="PF('dlgmodificar').hide();"/>
+            </h:form>
+        </p:dialog>
+            
+            
+            
+            
+            
+                  <p:dialog id="dlg2" header="Eliminar Persona" showEffect="explode" hideEffect="bounce"
+                    widgetVar="dlgeliminar" modal="true" resizable="false" minWidth="200">
+            <h:form id="formEliminar">
+               
+                <p:outputLabel value="¿Desea eliminar a la persona?" />
+                
+                <p:commandButton actionListener="#{usuarioBean.eliminar()}" value="Si" update=":formMostrar"
+                                 onclick="PF('dlgeliminar').hide();"/>
+                 <p:commandButton  value="No" 
+                                 onclick="PF('dlg2').hide();"/>
+            </h:form>
+        </p:dialog>
+                
+            
+            
+        
+        
+               </h:body>
+</html>
+
+        
